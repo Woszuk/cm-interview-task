@@ -1,8 +1,10 @@
-import ProductModel from "src/models/products";
+import ProductModel, { Product } from "src/models/products";
 import { ProductRepository } from "src/services/products/product-repository";
 
 export const createProductRepository = (): ProductRepository => {
   const getAll = () => ProductModel.find({});
 
-  return { getAll };
+  const create = (data: Partial<Product>) => ProductModel.create(data);
+
+  return { getAll, create };
 };
