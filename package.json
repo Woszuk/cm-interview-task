@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node --watch --env-file=.env --import=tsx src/app.ts"
+    "start": "node --watch --env-file=.env --import=tsx src/app.ts",
+    "test:types": "tsc --noEmit --project ."
   },
   "keywords": [],
   "author": "",
