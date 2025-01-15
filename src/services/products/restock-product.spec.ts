@@ -30,7 +30,7 @@ describe("restockProduct", () => {
       stock: productData.stock + 1,
     }));
 
-    const product = await productRepository.restock(id);
+    const product = await productService.restockProduct(id);
 
     assert.strictEqual(mockRestock.mock.calls.length, 1);
     assert.equal(product?.stock, productData.stock + 1);
