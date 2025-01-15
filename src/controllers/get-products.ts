@@ -4,7 +4,7 @@ import { createProductServices } from "src/services/products";
 export const getProductsController = async (_: Request, res: Response) => {
   const { getProducts } = createProductServices();
 
-  const products = getProducts();
+  const products = await getProducts();
 
   res.status(200).send(products);
 };
