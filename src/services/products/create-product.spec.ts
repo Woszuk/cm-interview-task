@@ -1,7 +1,7 @@
 import test, { describe, mock } from "node:test";
 import assert from "node:assert";
 import { createProductRepository } from "src/database/repositories/product-repository";
-import { Product } from "src/models/products";
+import { Product } from "src/models/product";
 import { createProductServices } from "src/services/products";
 
 describe("createProduct", () => {

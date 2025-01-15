@@ -1,7 +1,7 @@
 import test, { describe, mock } from "node:test";
 import assert from "node:assert";
 import { createProductRepository } from "src/database/repositories/product-repository";
-import { Product } from "src/models/products";
+import { Product } from "src/models/product";
 import { EntityNotFoundError } from "src/errors/EntityNotFoundError";
 import { createProductServices } from "src/services/products";
 
@@ -30,7 +30,7 @@ describe("restockProduct", () => {
       stock: productData.stock + 1,
     }));
 
-    const product = await productService.restockProduct(id);
+    const product = await productService.restockProduct({ id, quantity: 1 });
 
     assert.strictEqual(mockRestock.mock.calls.length, 1);
     assert.equal(product?.stock, productData.stock + 1);
@@ -42,7 +42,7 @@ describe("restockProduct", () => {
 
     await assert.rejects(
       async () => {
-        await productService.restockProduct(id);
+        await productService.restockProduct({ id, quantity: 1 });
       },
       err => {
         assert.strictEqual(mockRestock.mock.calls.length, 1);

@@ -1,7 +1,7 @@
 import test, { describe, mock } from "node:test";
 import assert from "node:assert";
 import { createProductRepository } from "src/database/repositories/product-repository";
-import { Product } from "src/models/products";
+import { Product } from "src/models/product";
 import { EntityNotFoundError } from "src/errors/EntityNotFoundError";
 import { createProductServices } from "src/services/products";
 
@@ -31,7 +31,7 @@ describe("sellProduct", () => {
       stock: productData.stock - 1,
     }));
 
-    const product = await productService.sellProduct(id);
+    const product = await productService.sellProduct({ id, quantity: 1 });
 
     assert.strictEqual(mockSell.mock.calls.length, 1);
     assert.equal(product?.stock, productData.stock - 1);
@@ -43,7 +43,7 @@ describe("sellProduct", () => {
 
     await assert.rejects(
       async () => {
-        await productService.sellProduct(id);
+        await productService.sellProduct({ id, quantity: 1 });
       },
       err => {
         assert.strictEqual(mockSell.mock.calls.length, 1);
@@ -53,7 +53,7 @@ describe("sellProduct", () => {
     );
   });
 
-  test("Should throw error if product stock is 0", async () => {
+  test("Should throw error if product stock is less than quantity of sell", async () => {
     const id = "123456";
     mock.method(productRepository, "create", async (data: Partial<Product>) => ({
       _id: id,
@@ -64,7 +64,7 @@ describe("sellProduct", () => {
       name: "Spoon",
       description: "The best spoon in the world at an attractive price",
       price: 1.23,
-      stock: 0,
+      stock: 2,
     };
 
     const mockSell = mock.method(productRepository, "sell", async () => null);
@@ -73,7 +73,7 @@ describe("sellProduct", () => {
 
     await assert.rejects(
       async () => {
-        await productService.sellProduct(id);
+        await productService.sellProduct({ id, quantity: 3 });
       },
       err => {
         assert.strictEqual(mockSell.mock.calls.length, 1);

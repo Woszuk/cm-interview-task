@@ -1,4 +1,4 @@
-import ProductModel, { Product } from "src/models/products";
+import ProductModel, { Product } from "src/models/product";
 import { ProductRepository } from "src/services/products/product-repository";
 
 export const createProductRepository = (): ProductRepository => {
@@ -6,15 +6,17 @@ export const createProductRepository = (): ProductRepository => {
 
   const create = (data: Partial<Product>) => ProductModel.create(data);
 
-  const restock = (id: string) =>
-    ProductModel.findByIdAndUpdate(id, { $inc: { stock: 1 } }, { returnDocument: "after" });
+  const restock = ({ id, quantity }: { id: string; quantity: number }) =>
+    ProductModel.findByIdAndUpdate(id, { $inc: { stock: quantity } }, { returnDocument: "after" });
 
-  const sell = (id: string) =>
+  const sell = ({ id, quantity }: { id: string; quantity: number }) =>
     ProductModel.findOneAndUpdate(
-      { _id: id, stock: { $gt: 0 } },
-      { $inc: { stock: -1 } },
+      { _id: id, stock: { $gte: quantity } },
+      { $inc: { stock: -quantity } },
       { returnDocument: "after" }
     );
 
-  return { getAll, create, restock, sell };
+  const findMany = (ids: string[]) => ProductModel.find({ _id: { $in: ids } });
+
+  return { getAll, create, restock, sell, findMany };
 };

@@ -1,8 +1,9 @@
-import { Product } from "src/models/products";
+import { Product } from "src/models/product";
 
 export type ProductRepository = {
   getAll(): Promise<Product[]>;
   create(data: Partial<Product>): Promise<Product>;
-  restock(id: string): Promise<Product | null>;
-  sell(id: string): Promise<Product | null>;
+  restock({ id, quantity }: { id: string; quantity: number }): Promise<Product | null>;
+  sell({ id, quantity }: { id: string; quantity: number }): Promise<Product | null>;
+  findMany(ids: string[]): Promise<Product[]>;
 };

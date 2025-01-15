@@ -14,18 +14,34 @@ export type CreateProductBody = {
   stock: number;
 };
 
-export const restockProductSchema = Joi.object({
-  id: Joi.string().hex().length(24),
+export const restockProductSchemaParams = Joi.object({
+  id: Joi.string().hex().length(24).required(),
+});
+
+export const restockProductSchemaBody = Joi.object({
+  quantity: Joi.number().positive().integer().required(),
 });
 
 export type RestockProductParams = {
   id: string;
 };
 
-export const sellProductSchema = Joi.object({
-  id: Joi.string().hex().length(24),
+export type RestockProductBody = {
+  quantity: number;
+};
+
+export const sellProductSchemaParams = Joi.object({
+  id: Joi.string().hex().length(24).required(),
+});
+
+export const sellProductSchemaBody = Joi.object({
+  quantity: Joi.number().positive().integer().required(),
 });
 
 export type SellProductParams = {
   id: string;
+};
+
+export type SellProductBody = {
+  quantity: number;
 };

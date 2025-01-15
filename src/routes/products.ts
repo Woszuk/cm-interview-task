@@ -5,30 +5,38 @@ import { restockProductController } from "src/controllers/restock-product-contro
 import { sellProductController } from "src/controllers/sellProductController";
 import { createProductRepository } from "src/database/repositories/product-repository";
 import { validationMiddleware } from "src/middlewares/validation-middleware";
-import { createProductSchema, restockProductSchema, sellProductSchema } from "src/schemas/product";
+import {
+  createProductSchema,
+  restockProductSchemaBody,
+  restockProductSchemaParams,
+  sellProductSchemaBody,
+  sellProductSchemaParams,
+} from "src/schemas/product";
 import { createProductServices } from "src/services/products";
 
 export const productsRouter = (router: Router) => {
   const productRepository = createProductRepository();
   const productServices = createProductServices(productRepository);
 
-  router.get("/", getProductsController(productServices));
+  router.get("/products", getProductsController(productServices));
 
   router.post(
-    "/",
+    "/products",
     validationMiddleware({ schema: createProductSchema }),
     createProductController(productServices)
   );
 
   router.post(
-    "/:id/restock",
-    validationMiddleware({ schema: restockProductSchema, location: "params" }),
+    "/products/:id/restock",
+    validationMiddleware({ schema: restockProductSchemaBody }),
+    validationMiddleware({ schema: restockProductSchemaParams, location: "params" }),
     restockProductController(productServices)
   );
 
   router.post(
-    "/:id/sell",
-    validationMiddleware({ schema: sellProductSchema, location: "params" }),
+    "/products/:id/sell",
+    validationMiddleware({ schema: sellProductSchemaBody }),
+    validationMiddleware({ schema: sellProductSchemaParams, location: "params" }),
     sellProductController(productServices)
   );
   return router;
