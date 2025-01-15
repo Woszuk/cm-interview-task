@@ -1,7 +1,17 @@
-import express from "express";
+import { appConfig } from "src/config/app-config";
+import { connectToDatabase } from "src/database/mongo-connection";
+import { createServer } from "src/server";
 
-const app = express();
+const application = async () => {
+  const { PORT, DB_URL } = appConfig;
 
-app.use(express.json());
+  await connectToDatabase(DB_URL);
 
-export default app;
+  const app = createServer();
+
+  app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
+  });
+};
+
+application();
