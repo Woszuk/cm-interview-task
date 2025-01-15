@@ -38,7 +38,7 @@ describe("restockProduct", () => {
 
   test("Should throw error if there is no product with entered id", async () => {
     const id = "123456";
-    const mockRestock = mock.method(productRepository, "restock", (id: string) => null);
+    const mockRestock = mock.method(productRepository, "restock", () => null);
 
     await assert.rejects(
       async () => {
