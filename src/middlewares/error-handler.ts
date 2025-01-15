@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import Joi from "joi";
 import { EntityNotFoundError } from "src/errors/EntityNotFoundError";
 import { NotFoundError } from "src/errors/NotFoundError";
+import { StockInsufficientError } from "src/errors/StockInsufficientError";
 import { ValidationError } from "src/errors/ValidationError";
 
 const mapJoiError = (error: Joi.ValidationError) => {
@@ -11,10 +12,16 @@ const mapJoiError = (error: Joi.ValidationError) => {
 };
 
 export const errorHandler = (err: Error, _1: Request, res: Response, next: NextFunction) => {
+  console.log(err); // It should be replaced by a logger like winston or pino
   if (err instanceof ValidationError) {
     res.status(400).send({
       message: err.message,
       details: mapJoiError(err.details),
+    });
+  } else if (err instanceof StockInsufficientError) {
+    res.status(400).send({
+      message: err.message,
+      details: err.details,
     });
   } else if (err instanceof EntityNotFoundError) {
     res.status(404).send({
