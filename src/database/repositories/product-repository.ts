@@ -6,5 +6,8 @@ export const createProductRepository = (): ProductRepository => {
 
   const create = (data: Partial<Product>) => ProductModel.create(data);
 
-  return { getAll, create };
+  const restock = (id: string) =>
+    ProductModel.findByIdAndUpdate(id, { $inc: { stock: 1 } }, { returnDocument: "after" });
+
+  return { getAll, create, restock };
 };

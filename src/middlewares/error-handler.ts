@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import Joi from "joi";
+import { EntityNotFoundError } from "src/errors/EntityNotFoundError";
 import { NotFoundError } from "src/errors/NotFoundError";
 import { ValidationError } from "src/errors/ValidationError";
 
@@ -14,6 +15,10 @@ export const errorHandler = (err: Error, _1: Request, res: Response, next: NextF
     res.status(400).send({
       message: err.message,
       details: mapJoiError(err.details),
+    });
+  } else if (err instanceof EntityNotFoundError) {
+    res.status(404).send({
+      message: err.message,
     });
   } else if (err instanceof NotFoundError) {
     res.status(404).send({

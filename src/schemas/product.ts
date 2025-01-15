@@ -13,3 +13,11 @@ export type CreateProductBody = {
   price: number;
   stock: number;
 };
+
+export const restockProductSchema = Joi.object({
+  id: Joi.string().hex().length(24),
+});
+
+export type RestockProductParams = {
+  id: string;
+};
