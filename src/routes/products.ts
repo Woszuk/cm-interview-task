@@ -2,9 +2,10 @@ import { Router } from "express";
 import { createProductController } from "src/controllers/create-product";
 import { getProductsController } from "src/controllers/get-products";
 import { restockProductController } from "src/controllers/restock-product-controller";
+import { sellProductController } from "src/controllers/sellProductController";
 import { createProductRepository } from "src/database/repositories/product-repository";
 import { validationMiddleware } from "src/middlewares/validation-middleware";
-import { createProductSchema, restockProductSchema } from "src/schemas/product";
+import { createProductSchema, restockProductSchema, sellProductSchema } from "src/schemas/product";
 import { createProductServices } from "src/services/products";
 
 export const productsRouter = (router: Router) => {
@@ -25,5 +26,10 @@ export const productsRouter = (router: Router) => {
     restockProductController(productServices)
   );
 
+  router.post(
+    "/:id/sell",
+    validationMiddleware({ schema: sellProductSchema, location: "params" }),
+    sellProductController(productServices)
+  );
   return router;
 };

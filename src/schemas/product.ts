@@ -21,3 +21,11 @@ export const restockProductSchema = Joi.object({
 export type RestockProductParams = {
   id: string;
 };
+
+export const sellProductSchema = Joi.object({
+  id: Joi.string().hex().length(24),
+});
+
+export type SellProductParams = {
+  id: string;
+};
