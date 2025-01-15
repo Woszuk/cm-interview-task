@@ -2,15 +2,17 @@ import test, { describe, mock } from "node:test";
 import assert from "node:assert";
 import { createProductRepository } from "src/database/repositories/product-repository";
 import { Product } from "src/models/products";
+import { createProductServices } from "src/services/products";
 
 describe("getProducts", () => {
   const productRepository = createProductRepository();
+  const productService = createProductServices(productRepository);
 
   test("Should get all products", async () => {
     const mockGetAll = mock.method(
       productRepository,
       "getAll",
-      async () =>
+      () =>
         [
           {
             name: "Spoon",
@@ -21,7 +23,7 @@ describe("getProducts", () => {
         ] as Product[]
     );
 
-    const products = await productRepository.getAll();
+    const products = await productService.getProducts();
 
     assert.strictEqual(mockGetAll.mock.calls.length, 1);
     assert.equal(products.length, 1);
@@ -30,7 +32,7 @@ describe("getProducts", () => {
   test("Should return an empty array if there are no products", async () => {
     const mockGetAll = mock.method(productRepository, "getAll", async () => []);
 
-    const products = await productRepository.getAll();
+    const products = await productService.getProducts();
 
     assert.strictEqual(mockGetAll.mock.calls.length, 1);
     assert.equal(products.length, 0);

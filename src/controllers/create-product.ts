@@ -1,14 +1,11 @@
 import { Request, Response } from "express";
 import { CreateProductBody } from "src/schemas/product";
-import { createProductServices } from "src/services/products";
+import { ProductServices } from "src/services/products";
 
-export const createProductController = async (
-  req: Request<{}, {}, CreateProductBody>,
-  res: Response
-) => {
-  const { createProduct } = createProductServices();
+export const createProductController = (productServices: ProductServices) => {
+  return async (req: Request<{}, {}, CreateProductBody>, res: Response) => {
+    const products = await productServices.createProduct(req.body);
 
-  const products = await createProduct(req.body);
-
-  res.status(201).send(products);
+    res.status(201).send(products);
+  };
 };

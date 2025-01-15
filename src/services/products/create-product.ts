@@ -12,8 +12,9 @@ export const createProduct = (productRepository: ProductRepository) => {
     price: number;
     stock: number;
   }) => {
-    const products = productRepository.create({ name, description, price, stock });
+    const product = await productRepository.create({ name, description, price, stock });
+    console.log(product);
 
-    return products;
+    return product;
   };
 };
