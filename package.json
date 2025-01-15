@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node --watch --env-file=.env --import=tsx src/app.ts",
-    "test:types": "tsc --noEmit --project ."
+    "test:types": "tsc --noEmit --project .",
+    "test": "node --import=tsx --test $(find . -name *.spec.ts)"
   },
   "keywords": [],
   "author": "",
