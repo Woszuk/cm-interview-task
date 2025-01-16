@@ -18,5 +18,7 @@ export const createProductRepository = (): ProductRepository => {
 
   const findMany = (ids: string[]) => ProductModel.find({ _id: { $in: ids } });
 
-  return { getAll, create, restock, sell, findMany };
+  const findById = (id: string) => ProductModel.findById(id);
+
+  return { getAll, create, restock, sell, findMany, findById };
 };

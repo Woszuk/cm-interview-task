@@ -5,5 +5,6 @@ export type ProductRepository = {
   create(data: Partial<Product>): Promise<Product>;
   restock({ id, quantity }: { id: string; quantity: number }): Promise<Product | null>;
   sell({ id, quantity }: { id: string; quantity: number }): Promise<Product | null>;
+  findById(id: string): Promise<Product | null>;
   findMany(ids: string[]): Promise<Product[]>;
 };
